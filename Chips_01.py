@@ -28,11 +28,7 @@ class Chip(object):
     #floor is where it will stop
     def gravity(self, acc, floor):
 
-        if self.size[1] < self.y and self.y < floor - (self.height) + (self.height / 10):
-            self.y = self.height
-            acc = 0
-
-        elif self.y < self.size[1] and self.y < floor - (self.height) + (self.height / 10):
+        if self.y < self.size[1] and self.y < floor - (self.height) + (self.height / 10):
             self.y = self.y + acc * self.times
             self.times = self.times + 1
 
