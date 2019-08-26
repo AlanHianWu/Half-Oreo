@@ -14,7 +14,7 @@ except ImportError as err:
 #================================================================
 class Chip(object):
 
-    def __init__(self, x, y, height, width, screen, image, size):
+    def __init__(self, x, y, height, width, screen, image):
         self.image = pygame.image.load(image)
         self.x = x
         self.y = y
@@ -28,7 +28,7 @@ class Chip(object):
     #floor is where it will stop
     def gravity(self, acc, floor):
 
-        if self.y < self.size[1] and self.y < floor - (self.height) + (self.height / 10):
+        if self.y < floor - (self.height) + (self.height / 10):
             self.y = self.y + acc * self.times
             self.times = self.times + 1
 
