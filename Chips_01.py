@@ -1,30 +1,15 @@
 #!/usr/bin/env python
+
 #================================================================
 #mass import with exception handling
 try:
-    import sys, random, math, os, getopt, pygame
-    from socket import *
-    from pygame.locals import *
+    import sys, pygame
 
 except ImportError as err:
     print("\nCould not load {}".format(err))
     sys.exit(2)
-#================================================================
-#Load image convert to bitmap and return image as object
-#================================================================
-'''def load_png(name):
-    fullname = os.path.join(name)
-    try:
-        image = pygame.image.load(fullname)
-        if image.get_alpha() is None:
-            image = image.convert()
-        else:
-            image = image.convert()
-    except pygame.error as message:
-        print('Could not load image: {}'.format(message))
-        raise SystemExit(message)
-    return image'''
-#================================================================
+
+
 #Connect Chip; still working on it
 #================================================================
 class Chip(object):
