@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 #================================================================
 #mass import with exception handling
 try:
@@ -11,10 +10,9 @@ except ImportError as err:
     print("\nCould not load {}".format(err))
     sys.exit(2)
 #================================================================
-
-#Load image and return image as object
+#Load image convert to bitmap and return image as object
 #================================================================
-def load_png(name):
+'''def load_png(name):
     fullname = os.path.join(name)
     try:
         image = pygame.image.load(fullname)
@@ -23,28 +21,42 @@ def load_png(name):
         else:
             image = image.convert()
     except pygame.error as message:
-        print('\nCould not load image: {}'.format(message))
+        print('Could not load image: {}'.format(message))
         raise SystemExit(message)
-    return image, image.get_rect()
+    return image'''
 #================================================================
-
 #Connect Chip; still working on it
 #================================================================
-class Chip(pygame.sprite.Sprite):
+class Chip(object):
 
-    def __init__(self, vector):
-        pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_png('chip.png')
-        screen = pygame.display.get_surface()
-        self.vector = vector
+    def __init__(self, x, y, height, width, screen, image, size):
+        self.image = pygame.image.load(image)
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.screen = screen
+        self.size = size
+        self.times = 1
 
+    #acc the accration due to gravity
+    #floor is where it will stop
+    def gravity(self, acc, floor):
+
+        print(self.y)
+        if self.size[1] < self.y and self.y < floor - (self.height) + (self.height / 10):
+            self.y = self.height
+            acc = 0
+
+        elif self.y < self.size[1] and self.y < floor - (self.height) + (self.height / 10):
+            self.y = self.y + acc * self.times
+            self.times = self.times + 1
+
+        else:
+            self.y = floor - (self.height) + (self.height / 10)
+
+    #update the new location and blit it on screen
     def update(self):
-        newpos = self.calcnewpos(self.rect, self.vector)
-        self.rect = newpos
-
-    def calcnewpos(self, rect, vector):
-        (angle, z) = vector
-        (dx, dy) = (z * math.cos(angle), z * math.sin(angle))
-        return rect.move(dx, dy)
+        return self.screen.blit(pygame.transform.scale(self.image, (self.width, self.height)), (self.x, self.y))
 
 #================================================================
