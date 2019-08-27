@@ -36,7 +36,7 @@ class Chip(object):
             self.y = floor - (self.height) + (self.height / 10)
 
     def collision(self, other):
-        pass
+        return self.rect.colliderect(other.rect)
 
     #update the new location and blit it on screen
     def update(self):
