@@ -34,7 +34,7 @@ class Chip(object):
 
         else:
             self.y = floor - (self.height) + (self.height / 10)
-
+    #collision detection
     def collision(self, other):
         return self.rect.colliderect(other.rect)
 
