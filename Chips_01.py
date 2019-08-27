@@ -21,7 +21,7 @@ class Chip(object):
         self.width = width
         self.height = height
         self.screen = screen
-        self.size = size
+        self.rect = self.image.get_rect()
         self.times = 1
 
     #acc the accration due to gravity
@@ -34,6 +34,9 @@ class Chip(object):
 
         else:
             self.y = floor - (self.height) + (self.height / 10)
+
+    def collision(self, other):
+        pass
 
     #update the new location and blit it on screen
     def update(self):
