@@ -36,7 +36,7 @@ def main():
 #Game Loop:
     chip = Chip(50, 50, 50, 50, screen, 'chip.png')
     chip_2 = Chip(275, 100, 50, 50, screen, 'chip.png')
-    chip_3 = Chip(400, 150, 50, 50, screen, 'chip.png')
+    chip_3 = Chip(275, 150, 50, 50, screen, 'chip.png')
 
     while True:
         background.blit(text, text_position)
@@ -48,11 +48,14 @@ def main():
                 sys.exit()
 
         chip_3.gravity(9.81, 500)
-        chip_3.update()
         chip_2.gravity(0.5, 600)
+        chip_3.update()
         chip_2.update()
-        chip.gravity(5, 400)
-        chip.update()
+
+        print(chip_3.collision(chip_2))
+
+        #chip.gravity(5, 400)
+        #chip.update()
         pygame.display.flip()
         #pygame.display.update()
 #--------------------------------------------------------------
