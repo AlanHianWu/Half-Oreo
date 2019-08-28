@@ -3,16 +3,16 @@
 import pygame
 
 class Board_piece(object):
-   def __init__(self, image, width, height):
+   def __init__(self, image, x=0, y=0):
       self.image = image
-      self.width = width
-      self.height = height
+      self.x = x
+      self.y = y
 
    def make_board(self):
       #--multiplis the board piece accordingly--
-      for x in range(0, 600, 100):
-         for y in range(100, 400, 100):
-            win.blit(pygame.transform.scale(self.image, (self.width, self.height)), (x, y))
+      for i in range(0, 560, 80):
+         for k in range(0, 480, 80):
+            win.blit(im, (self.x + i, self.y + k))
 
 #-----------------------------------------------------------------
 
@@ -33,11 +33,11 @@ class Chip(object):
 
 #---------------------------------------------------------------------------------
 
-win = pygame.display.set_mode((600, 600))
+win = pygame.display.set_mode((560, 600))
 
 #--The board--
-im = pygame.image.load('block.png')
-board = Board_piece(im, 100, 100)
+im = pygame.transform.scale(pygame.image.load('block.png'), (80, 80))
+board = Board_piece(im, 0, 80)
 #--For now I've only got a png 'block' with a transparent circle in the middle. The circle and block measurments are not exact, but later we'll get exact measurments--
 
 
