@@ -34,8 +34,8 @@ def main():
 
 #--------------------------------------------------------------
 #Game Loop:
-    chip = Chip(50, 50, 50, 50, screen, 'chip.png')
-    chip_2 = Chip(275, 100, 50, 50, screen, 'chip.png')
+    #chip_1 = Chip(275, 50, 50, 50, screen, 'chip.png')
+    chip_2 = Chip(200, 0, 50, 50, screen, 'chip.png')
     chip_3 = Chip(275, 150, 50, 50, screen, 'chip.png')
 
     while True:
@@ -47,12 +47,19 @@ def main():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        chip_3.gravity(9.81, 500)
-        chip_2.gravity(0.5, 600)
+        chip_3.gravity(0.1, 550)
+        chip_2.gravity(0.1, 550)
+        #chip_1.gravity(0.1, 600)
+        #print('chip_2.y:',chip_2.y )
+        #chip_1.update()
+        chip_2.collisions()
+        chip_3.collisions()
+        #print(chip_2.collision(chip_3))
+        #print('World before: ', chip_2.World)
+        chip_2.connection_line(chip_3)
         chip_3.update()
         chip_2.update()
-
-        print(chip_3.collision(chip_2))
+        #print('World After: ',chip_2.World)
 
         #chip.gravity(5, 400)
         #chip.update()
