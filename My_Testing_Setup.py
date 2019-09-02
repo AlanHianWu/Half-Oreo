@@ -3,9 +3,7 @@
 #================================================================
 #mass import with exception handling
 try:
-    import sys, random, math, os, getopt, pygame
-    from socket import *
-    from pygame.locals import *
+    import sys, pygame
     from Chips_01 import Chip
 
 except ImportError as err:
@@ -49,7 +47,7 @@ def main():
 
         chip_3.gravity(0.1, 550)
         chip_2.gravity(2, 550)
-        chip_2.momentum(0.1)
+        chip_2.momentum(3)
         #chip_1.gravity(0.1, 600)
         #print('chip_2.y:',chip_2.y )
         #chip_1.update()
