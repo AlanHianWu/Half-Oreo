@@ -81,16 +81,30 @@ class Chip(object):
 
     #Uses the straight line equation to generate a line from the centre point of this chip to another so far limited to just comparing two chips at a time
     def connection_line(self, other):
-        m = (other.y - self.y) / (other.x - self.x)
-        print('\nDRAW Line From This Box To Next Box Now\n')
-        for x in Chip.float_range(self.x, other.x, 0.5):
-            y = ((m * x) - (m * self.x)) + self.y
-            if (self.x_limit[0] <= x and x <= self.x_limit[1]) and (self.y_limit[0] <= y and y <= self.y_limit[1]):
-                print('Line Inside My Hit BOX: ', (x, y))
-            elif (other.x_limit[0] <= x and x <= other.x_limit[1]) and (other.y_limit[0] <= y and y <= other.y_limit[1]):
-                print('Line Inside Other Box : ', (x, y))
+        try:
+            m = (other.y - self.y) / (other.x - self.x)
+            print('\nDRAWING Line From This Box To Next Box Now\n')
+            print(self.x, self.y, other.x, other.y)
+            if other.x < self.x:
+                for x in Chip.float_range(other.x, self.x):
+                    y = ((m * x) - (m * self.x)) + self.y
+                    if (self.x_limit[0] <= x and x <= self.x_limit[1]) and (self.y_limit[0] <= y and y <= self.y_limit[1]):
+                        print('Line Inside My Hit BOX: ', (x, y))
+                    elif (other.x_limit[0] <= x and x <= other.x_limit[1]) and (other.y_limit[0] <= y and y <= other.y_limit[1]):
+                        print('Line Inside Other Box : ', (x, y))
+                    else:
+                        print('Line In Void          : ', (x, y))
             else:
-                print('Line In Void          : ', (x, y))
+                for x in Chip.float_range(self.x, other.x):
+                    y = ((m * x) - (m * self.x)) + self.y
+                    if (self.x_limit[0] <= x and x <= self.x_limit[1]) and (self.y_limit[0] <= y and y <= self.y_limit[1]):
+                        print('Line Inside My Hit BOX: ', (x, y))
+                    elif (other.x_limit[0] <= x and x <= other.x_limit[1]) and (other.y_limit[0] <= y and y <= other.y_limit[1]):
+                        print('Line Inside Other Box : ', (x, y))
+                    else:
+                        print('Line In Void          : ', (x, y))
+        except ZeroDivisionError:
+            print('y=',self.y)
 
 
     #update the new location and blit it on screen
