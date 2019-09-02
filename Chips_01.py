@@ -35,6 +35,9 @@ class Chip(object):
         else:
             self.y = floor - (self.height) + (self.height / 10)
 
+    def momentum(self, vector):
+        self.x = self.x + vector
+
     #Collision dectection
     def collision(self, other):
         my_size = (self.y - (self.height / 2), self.y + (self.height / 2))
@@ -60,10 +63,19 @@ class Chip(object):
         self.x_limit = bottom_left[0], top_right[0]
         #print('my_conner_points: {}\nmy coordinates: {},{}'.format(self.location, self.x, self.y))
 
+    @staticmethod
+    def float_range(start, finish, steps=None):
+        i = start
+        if steps is None:
+            steps = 1
+        while i < finish:
+            yield i
+            i += steps
+
     def connection_line(self, other):
         m = (other.y - self.y) / (other.x - self.x)
         print('DRAW: DRAW')
-        for x in range(self.x, other.x):
+        for x in Chip.float_range(self.x, other.x, 0.5):
             y = ((m * x) - (m * self.x)) + self.y
             if (self.x_limit[0] <= x and x <= self.x_limit[1]) and (self.y_limit[0] <= y and y <= self.y_limit[1]):
                 print('mymymy: ', (x, y))
