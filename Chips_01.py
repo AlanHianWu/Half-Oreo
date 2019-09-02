@@ -12,6 +12,11 @@ except ImportError as err:
 #================================================================
 class Chip(object):
 
+    '''This World class varible keeps tracks of the location 
+       of all instances of a chip by keeping four points of the 
+       conners of the hit box, the order is from top left then
+       clockrise until bottom left, each time the update method is
+       excuted the World gets refreshed, SO FAR NOT IN USE.'''
     World = []
 
     def __init__(self, x, y, height, width, screen, image):
@@ -35,10 +40,11 @@ class Chip(object):
         else:
             self.y = floor - (self.height) + (self.height / 10)
 
+    #plan to use this to generate momentum for the chips
     def momentum(self, vector):
         self.x = self.x + vector
 
-    #Collision dectection
+    #Collision dectection, a very basic collision dectection method
     def collision(self, other):
         my_size = (self.y - (self.height / 2), self.y + (self.height / 2))
         other_size = (other.y - (other.height / 2), other.y + (other.height / 2))
@@ -63,6 +69,7 @@ class Chip(object):
         self.x_limit = bottom_left[0], top_right[0]
         #print('my_conner_points: {}\nmy coordinates: {},{}'.format(self.location, self.x, self.y))
 
+    #A range function but for float numbers, since the built in range does not work with float numbers
     @staticmethod
     def float_range(start, finish, steps=None):
         i = start
@@ -72,17 +79,18 @@ class Chip(object):
             yield i
             i += steps
 
+    #Uses the straight line equation to generate a line from the centre point of this chip to another so far limited to just comparing two chips at a time
     def connection_line(self, other):
         m = (other.y - self.y) / (other.x - self.x)
-        print('DRAW: DRAW')
+        print('\nDRAW Line From This Box To Next Box Now\n')
         for x in Chip.float_range(self.x, other.x, 0.5):
             y = ((m * x) - (m * self.x)) + self.y
             if (self.x_limit[0] <= x and x <= self.x_limit[1]) and (self.y_limit[0] <= y and y <= self.y_limit[1]):
-                print('mymymy: ', (x, y))
+                print('Line Inside My Hit BOX: ', (x, y))
             elif (other.x_limit[0] <= x and x <= other.x_limit[1]) and (other.y_limit[0] <= y and y <= other.y_limit[1]):
-                print('ititit: ', (x, y))
+                print('Line Inside Other Box : ', (x, y))
             else:
-                print('void_void: ', (x, y))
+                print('Line In Void          : ', (x, y))
 
 
     #update the new location and blit it on screen
