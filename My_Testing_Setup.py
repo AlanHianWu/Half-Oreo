@@ -48,7 +48,8 @@ def main():
                 sys.exit()
 
         chip_3.gravity(0.1, 550)
-        chip_2.gravity(0.1, 550)
+        chip_2.gravity(2, 550)
+        chip_2.momentum(0.1)
         #chip_1.gravity(0.1, 600)
         #print('chip_2.y:',chip_2.y )
         #chip_1.update()
