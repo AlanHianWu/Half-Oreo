@@ -19,7 +19,7 @@ def load_images():
          pass
 
    return all_images
-      #--the name of the file(without the file extension) return to the loaded image itself--
+      #--the name of the file(without the file extension) return to the loaded image itself e.g all_images[name] will return the loaded image of name.png--
 
 pygame.init()
 pygame.font.init()
@@ -44,7 +44,7 @@ game_on = True
 menu = True
 
 cutscene = 0
-#----------
+#------------------------------------------------------------------------------------------------------------------------------------------------
 
 #---------------------------------------------------------------------- INTRO SEQUENCE ----------------------------------------------------------
 while cutscene < 3 and menu == True:
