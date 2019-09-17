@@ -7,13 +7,13 @@ class Sprite_object_basic(object):
    #--This class is used to make sprite objects(primarily for objects with one set of sprites)--
    #--for the purpose of connect 4 it will be used for the menu buttons--
 
-   def __init__(self, x, y, witdh, height, idle_frame, active_frames, frame_speed, start_cycle=False, current_frame=0, is_alive=True):
+   def __init__(self, x, y, witdh, height, idle_frame, active_frames, frame_speed, start_cycle=False, current_frame=0):
       self.x = x
       self.y = y
       self.witdh = witdh
       self.height = height
       self.idle_frame = idle_frame
-      #--make sure the active frames are in the order you want in a list
+      #--make sure the active frames are in the order you want in a list--
       self.active_frames = active_frames
       self.frame_speed = frame_speed
       self.start_cycle = start_cycle
@@ -31,10 +31,11 @@ class Sprite_object_basic(object):
       window.blit(frame, (self.x, self.y))
 
    def cycle(self):
+      #used to cycle through the sprites in self.active_frames
       if self.start_cycle is True:
-         frame_per_sec = self.frame_speed // len(self.active_frames)
+         frame_per_update = self.frame_speed // len(self.active_frames) #This is the amount of times a single frame will be played
 
-         if self.flag > frame_per_sec - 1:
+         if self.flag > frame_per_update - 1:
             self.flag = 0
             self.current_frame += 1
          else:
