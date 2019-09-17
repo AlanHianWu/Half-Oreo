@@ -4,23 +4,7 @@ import threading
 import time
 import winsound
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (300,50)
 
-#--To load all images in image directory and store them in a dictionary--
-all_images = {}
-
-for image in os.listdir('images'):
-   all_images[image.split('.')[0]] = pygame.image.load('images/{}'.format(image))
-   #--the name of the file(without the file type) return to the loaded image itself--
-#------------------------
-
-pygame.font.init()
-
-font_1 = pygame.font.SysFont('Comic Sans MS', 40)
-
-window = pygame.display.set_mode((560, 600))
-
-game = True
 
 
 def display_text(font, s, window, colour, co_ordinates):
@@ -81,36 +65,53 @@ def fade_out(fade_colour, main_window, width, height, speed, array=None):
       main_window.blit(fade, (0, 0))
       pygame.display.update()
       pygame.time.delay(5)
+def main():
+   os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (300,50)
 
-cutscene = 0
+   #--To load all images in image directory and store them in a dictionary--
+   all_images = {}
 
-while game:
-   pygame.time.delay(15)
-   window.fill((0, 0, 0))
-   for event in pygame.event.get():
-      if event.type == pygame.QUIT:
-         game = False
-   if cutscene < 1:
-      fade_in((0, 0, 0), window, 560, 600, 8, [('text', (font_1, 'POWERED', window, (255, 255, 255), (200, 200))), 
-                                               ('text', (font_1, 'BY', window, (255, 255, 255), (250, 260))),
-                                               ('text', (font_1, 'PYGAME', window, (255, 255, 255), (205, 320)))])
+   for image in os.listdir('images'):
+      all_images[image.split('.')[0]] = pygame.image.load('images/{}'.format(image))
+      #--the name of the file(without the file type) return to the loaded image itself--
+   #------------------------
 
-      fade_out((0, 0, 0), window, 560, 600, 5, [('text', (font_1, 'POWERED', window, (255, 255, 255), (200, 200))), 
-                                               ('text', (font_1, 'BY', window, (255, 255, 255), (250, 260))),
-                                               ('text', (font_1, 'PYGAME', window, (255, 255, 255), (205, 320)))])
-      cutscene = 1
+   pygame.font.init()
 
-   if cutscene < 2:
-      fade_in((0, 0, 0), window, 560, 600, 3, [('image', (all_images['half_oreo'], window, (100, 100), (310, 300))),
-                                               ('text', (font_1, 'Production', window, (255, 255, 255), (180, 400)))])
+   font_1 = pygame.font.SysFont('Comic Sans MS', 40)
 
-      fade_out((0, 0, 0), window, 560, 600, 5, [('image', (all_images['half_oreo'], window, (100, 100), (310, 300))),
-                                                ('text', (font_1, 'Production', window, (255, 255, 255), (180, 400)))])
-      cutscene = 2
+   window = pygame.display.set_mode((560, 600))
 
-   if cutscene < 3:
-      cutscene = 3
+   game = True
+   cutscene = 0
 
-   #--the three 'if' statements above are the cutscenes, they're not yet done though, after this the menu should show up
+   while game:
+      pygame.time.delay(15)
+      window.fill((0, 0, 0))
+      for event in pygame.event.get():
+         if event.type == pygame.QUIT:
+            game = False
+      if cutscene < 1:
+         fade_in((0, 0, 0), window, 560, 600, 8, [('text', (font_1, 'POWERED', window, (255, 255, 255), (200, 200))), 
+                                                  ('text', (font_1, 'BY', window, (255, 255, 255), (250, 260))),
+                                                  ('text', (font_1, 'PYGAME', window, (255, 255, 255), (205, 320)))])
 
-   pygame.display.update()
+         fade_out((0, 0, 0), window, 560, 600, 5, [('text', (font_1, 'POWERED', window, (255, 255, 255), (200, 200))), 
+                                                  ('text', (font_1, 'BY', window, (255, 255, 255), (250, 260))),
+                                                  ('text', (font_1, 'PYGAME', window, (255, 255, 255), (205, 320)))])
+         cutscene = 1
+
+      if cutscene < 2:
+         fade_in((0, 0, 0), window, 560, 600, 3, [('image', (all_images['half_oreo'], window, (100, 100), (310, 300))),
+                                                  ('text', (font_1, 'Production', window, (255, 255, 255), (180, 400)))])
+
+         fade_out((0, 0, 0), window, 560, 600, 5, [('image', (all_images['half_oreo'], window, (100, 100), (310, 300))),
+                                                   ('text', (font_1, 'Production', window, (255, 255, 255), (180, 400)))])
+         cutscene = 2
+
+      if cutscene < 3:
+         cutscene = 3
+
+      #--the three 'if' statements above are the cutscenes, they're not yet done though, after this the menu should show up
+
+      pygame.display.update()
