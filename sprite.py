@@ -25,6 +25,7 @@ class Sprite_object_basic(object):
       self.flag = 0
 
    def display_animation(self, window, frame_name):
+      #frame_name refers to the keys in the dictionary all_frames. So if frame_name is string 'walk_right', it should refer to all_frames['walk_right']
       if self.current_animation is frame_name:
          pass
       else:
@@ -35,7 +36,7 @@ class Sprite_object_basic(object):
       window.blit(frame, (self.x, self.y))
 
    def cycle(self):
-      #used to cycle through the sprites in self.active_frames
+      #used to cycle through the sprites
       frame_per_update = self.frame_speed // len(self.all_frames[self.current_animation]) #This is the amount of times a single frame will be played
 
       if self.flag > frame_per_update - 1:
