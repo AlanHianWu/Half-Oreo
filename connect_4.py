@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import pygame
 import os
+from Misc_function import *
 from Chip import *
 from Board import *
 from menu import *
@@ -8,30 +9,24 @@ from sprite import *
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (300,50)
 
-def load_images():
-   #--To load all images in image directory and store them in a dictionary--
-   all_images = {}
-
-   for image in os.listdir('images'):
-      try:
-         all_images[image.split('.')[0]] = pygame.image.load('images/{}'.format(image))
-      except:
-         pass
-
-   return all_images
-      #--the name of the file(without the file extension) return to the loaded image itself e.g all_images[name] will return the loaded image of name.png--
-
 pygame.init()
 pygame.font.init()
 
 #--images--
-all_images = load_images()
+all_images = load_images('images')
+#----------
+
+#--sounds--
+all_sounds = load_sounds('audio')
 #----------
 
 ##--Menu buttons--
-#                                  x,  y,  width, height, idle_frame,                active_frames,                                          frame_rate
-local_button = Sprite_object_basic(130, 300, 300, 80, all_images['Menu_button_1'], [all_images['Menu_button_2'], all_images['Menu_button_1']], 10)
-Multiplayer_button = Sprite_object_basic(130, 400, 300, 80, all_images['Menu_button_1'], [all_images['Menu_button_2'], all_images['Menu_button_1']], 10)
+#                                  x,  y,  width, height, idle_frame,               active_frames,                                                    frame_rate
+local_button = Sprite_object_basic('local', 130, 300, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+                                                                ('idle', [all_images['Menu_button_1']])], 10)
+
+Multiplayer_button = Sprite_object_basic('local', 130, 400, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+                                                                      ('idle', [all_images['Menu_button_1']])], 10)
 #----------
 
 #--misc--
@@ -82,12 +77,14 @@ while cutscene < 3 and menu == True:
 #-------------------------------------------------------------------
 
 #---------------------------------------------------------------------- Menu ----------------------------------------------------------
+
 while game_on == True and menu == True:
    screen.fill((0, 0, 0))
    for event in pygame.event.get():
       if event.type == pygame.QUIT:
          game_on = False
-      if event.type == pygame.MOUSEBUTTONDOWN and local_button.start_cycle == True:
+      if event.type == pygame.MOUSEBUTTONDOWN and local_button.collision(screen, mouse_x, mouse_y) == True:
+         play_sound('select', all_sounds, 0)
          menu = False
 
    keys = pygame.key.get_pressed()
@@ -96,14 +93,14 @@ while game_on == True and menu == True:
    Multiplayer_button.cycle()
 
    if local_button.collision(screen, mouse_x, mouse_y) == True:
-      local_button.display_animation(screen)
+      local_button.display_animation(screen, 'flicker')
    else:
-      local_button.display_idle(screen)
+      local_button.display_animation(screen, 'idle')
 
    if Multiplayer_button.collision(screen, mouse_x, mouse_y) == True:
-      Multiplayer_button.display_animation(screen)
+      Multiplayer_button.display_animation(screen, 'flicker')
    else:
-      Multiplayer_button.display_idle(screen)
+      Multiplayer_button.display_animation(screen, 'idle')
 
    redraw([('text', [font_1, 'Local', screen, (0, 0, 0), (230, 325)]),
            ('text', [font_1, 'Multiplayer', screen, (0, 0, 0), (180, 425)])])
