@@ -2,7 +2,10 @@
 import pygame
 
 class Song_player(object):
+   #This class is used to play songs in a list
+
    def __init__(self, ID, songs, volume=1.0, current_song=0):
+      #--songs must be in a list
       self.ID = ID
       self.songs = songs
       self.volume = volume
@@ -80,7 +83,7 @@ class Song_player(object):
       self.volume = volume
 
 
-   def play_song(self, song):
+   def play_song(self, song, loop=0):
       #--play a specified song--
       pygame.mixer.music.pause()
       i = 0
