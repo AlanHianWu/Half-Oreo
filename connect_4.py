@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 import pygame
 import os
-from Misc_function import *
+from misc_function import *
 from Chip import *
 from Board import *
 from menu import *
 from sprite import *
 from music_player import *
+from menu_button import *
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (300,50)
 
@@ -18,23 +19,31 @@ all_images = load_images('images')
 #----------
 
 #--sounds--
-all_sounds = load_sounds('audio')
+all_sounds = load_sounds('audio/fx')
 #----------
 
 ##--Menu buttons--
-#                                  x,  y,  width, height, idle_frame,               active_frames,                                                    frame_rate
-local_button = Sprite_object_basic('local', 130, 300, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+local_sprite = Sprite_object_basic('local', 130, 300, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
                                                                 ('idle', [all_images['Menu_button_1']])], 10)
 
-Multiplayer_button = Sprite_object_basic('local', 130, 400, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+local_button = Menu_button(local_sprite, pygame.MOUSEBUTTONDOWN, 'beep', 'select')
+
+multiplayer_sprite = Sprite_object_basic('local', 130, 400, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
                                                                       ('idle', [all_images['Menu_button_1']])], 10)
+
+multiplayer_button = Menu_button(multiplayer_sprite, pygame.MOUSEBUTTONDOWN, 'beep', 'select')
 #----------
 
-intro_songs = Song_player('intro_songs', ['audio/intro_part_1.mp3', 'audio/intro_part_2.mp3'], 0.5)
+#--music--
+intro_songs = Song_player('intro_songs', ['audio/intro_part_1.mp3', 'audio/intro_part_2.mp3'], 0.6)
+game_music = Song_player('game_music', ['audio/Summer loverr.mp3', 'audio/Rebound.mp3', 'audio/Walkin home.mp3', 'audio/Every day.mp3'], 0.6)
+#--------
+
+#--fonts--
+font_1 = pygame.font.SysFont(None, 50)
+#--------
 
 #--misc--
-font_1 = pygame.font.SysFont(None, 50)
-
 screen = pygame.display.set_mode((560, 600))
 
 game_on = True
@@ -87,19 +96,10 @@ intro_songs.play_song('audio/intro_part_2.mp3', -1)
 
 while game_on == True and menu == True:
    screen.fill((0, 0, 0))
-   mouse_x, mouse_y = pygame.mouse.get_pos()
-   local_button.cycle()
-   Multiplayer_button.cycle()
+   local_button.redraw(screen)
+   multiplayer_button.redraw(screen)
 
-   if local_button.collision(mouse_x, mouse_y) == True:
-      local_button.display_animation(screen, 'flicker')
-   else:
-      local_button.display_animation(screen, 'idle')
 
-   if Multiplayer_button.collision(mouse_x, mouse_y) == True:
-      Multiplayer_button.display_animation(screen, 'flicker')
-   else:
-      Multiplayer_button.display_animation(screen, 'idle')
 
    redraw([('text', [font_1, 'Local', screen, (0, 0, 0), (230, 325)]),
            ('text', [font_1, 'Multiplayer', screen, (0, 0, 0), (180, 425)]),
@@ -108,13 +108,11 @@ while game_on == True and menu == True:
    for event in pygame.event.get():
       if event.type == pygame.QUIT:
          game_on = False
-      if event.type == pygame.MOUSEBUTTONDOWN and local_button.collision(mouse_x, mouse_y) == True:
-         play_sound('select', all_sounds, 0)
+      if local_button.is_clicked(event):
          intro_songs.stop()
          fade_out((255, 255, 255), screen, 560, 600, 3)
          menu = False
-      if event.type == pygame.MOUSEBUTTONDOWN and Multiplayer_button.collision(mouse_x, mouse_y) == True:
-         play_sound('select', all_sounds, 0)
+      multiplayer_button.is_clicked(event)
 
    pygame.time.delay(30)
    pygame.display.update()
@@ -139,7 +137,7 @@ chip = Chip(0, 1, (255, 255, 0), 0, 0, 80, 80, 1, all_images['chip_red'], False)
 #-------
 
 #--Music--
-mix = Song_player('mix', ['audio/Summer loverr.mp3', 'audio/Rebound.mp3', 'audio/Walkin home.mp3', 'audio/Every day.mp3'], 0.6)
+game_music = Song_player('game_music', ['audio/Summer loverr.mp3', 'audio/Rebound.mp3', 'audio/Walkin home.mp3', 'audio/Every day.mp3'], 0.6)
 #--------
 
 #--misc--
@@ -180,7 +178,7 @@ while game_on:
 
    Chip.draw_chips(screen)
    board.draw_board(screen, "Player {} GO".format(current_player))
-   mix.play_list(60, 3)
+   game_music.play_list(60, 5)
 
    pygame.display.update()
 

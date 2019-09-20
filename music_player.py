@@ -83,7 +83,7 @@ class Song_player(object):
       self.volume = volume
 
 
-   def play_song(self, song, loop=0):
+   def play_song(self, song, loops=0):
       #--play a specified song--
       pygame.mixer.music.pause()
       i = 0
@@ -93,9 +93,10 @@ class Song_player(object):
       except IndexError:
          print('Error: {} not in {}'.format(song, self.ID))
          quit()
+      pygame.mixer.music.set_volume(self.volume)
       self.current_song = i
       pygame.mixer.music.load(self.songs[self.current_song])
-      pygame.mixer.music.play()
+      pygame.mixer.music.play(loops=loops)
 
 
    def stop(self):
