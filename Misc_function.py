@@ -2,6 +2,8 @@
 import pygame
 import os
 
+pygame.mixer.init()
+
 def load_images(directory):
    #--To load all images in image directory and store them in a dictionary--
    directory_images = {}
@@ -29,3 +31,4 @@ def load_sounds(directory):
 
 def play_sound(file_name, dictionary, channel=0):
    pygame.mixer.Channel(channel).play(dictionary[file_name])
+

@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 import pygame
+import sprite
 
 class Chip(object):
    #--make sure you keep all the init variables(ID, owner, colour, is_falling), class variables, print_chips(), and the return values for gravity(). They'll be needed for the main loop-- 
    all_chips = {}
-   def __init__(self, ID, owner, colour, x, y, width, vel, is_falling=False):
+   def __init__(self, ID, owner, colour, x, y, width, height, vel, image=None, is_falling=False):
       self.ID = ID
       self.owner = owner
       self.colour = colour
       self.x = x
       self.y = y
       self.width = width
+      self.height = height
       self.vel = vel
+      self.image = image
       self.is_falling = is_falling
       Chip.all_chips[self.ID] = self
 
@@ -32,17 +35,22 @@ class Chip(object):
       if mouse_pos > 480 :
          self.x = 480
 
-   def gravity(self, limit):
+   def gravity(self, other):
       #gravity changes chips y then return wether it's y has hit the limit
-      if self.y < limit:
+      if other.collision(self.x, self.y) != True and self.is_falling == True:
          self.y += self.vel
          self.vel += 1
          return 0
       else:
-         self.y = limit
+         self.is_falling = False
+         self.y = other.y - self.height
          return 1
 
    @classmethod
    def draw_chips(cls, screen):
       for chip in cls.all_chips.values():
-         pygame.draw.circle(screen, chip.colour, (chip.x + 40, chip.y), chip.width)
+         if chip.image == None:
+            pygame.draw.circle(screen, chip.colour, (chip.x + 40, chip.y), chip.width)
+         else:
+            image = pygame.transform.scale(chip.image, (chip.width, chip.height))
+            screen.blit(image, (chip.x, chip.y))
