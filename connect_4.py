@@ -14,6 +14,8 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (300,50)
 pygame.init()
 pygame.font.init()
 
+clock = pygame.time.Clock()
+
 #--images--
 all_images = load_images('images')
 #----------
@@ -23,13 +25,13 @@ all_sounds = load_sounds('audio/fx')
 #----------
 
 ##--Menu buttons--
-local_sprite = Sprite_object_basic('local', 130, 300, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
-                                                                ('idle', [all_images['Menu_button_1']])], 10)
+local_sprite = Sprite_object_basic('local', 130, 300, 300, 80, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+                                                                ('idle', [all_images['Menu_button_1']])], 20)
 
 local_button = Menu_button(local_sprite, pygame.MOUSEBUTTONDOWN, 'beep', 'select')
 
-multiplayer_sprite = Sprite_object_basic('local', 130, 400, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
-                                                                      ('idle', [all_images['Menu_button_1']])], 10)
+multiplayer_sprite = Sprite_object_basic('local', 130, 400, 300, 80, 300, 80, [('flicker', [all_images['Menu_button_2'], all_images['Menu_button_1']]),
+                                                                      ('idle', [all_images['Menu_button_1']])], 20)
 
 multiplayer_button = Menu_button(multiplayer_sprite, pygame.MOUSEBUTTONDOWN, 'beep', 'select')
 #----------
@@ -62,28 +64,27 @@ while cutscene < 3 and menu == True:
    screen.fill((0, 0, 0))
 
    if cutscene < 1:
-      fade_in((0, 0, 0), screen, 560, 600, 5, [('text', (font_1, 'POWERED', screen, (255, 255, 255), (200, 200))), 
+      fade_in((0, 0, 0), screen, 560, 600, 150, [('text', (font_1, 'POWERED', screen, (255, 255, 255), (200, 200))), 
                                                ('text', (font_1, 'BY', screen, (255, 255, 255), (250, 260))),
                                                ('text', (font_1, 'PYGAME', screen, (255, 255, 255), (205, 320)))])
 
-      fade_out((0, 0, 0), screen, 560, 600, 5, [('text', (font_1, 'POWERED', screen, (255, 255, 255), (200, 200))), 
+      fade_out((0, 0, 0), screen, 560, 600, 130, [('text', (font_1, 'POWERED', screen, (255, 255, 255), (200, 200))), 
                                                 ('text', (font_1, 'BY', screen, (255, 255, 255), (250, 260))),
                                                 ('text', (font_1, 'PYGAME', screen, (255, 255, 255), (205, 320)))])
       cutscene = 1
 
    if cutscene < 2:
-      fade_in((0, 0, 0), screen, 560, 600, 5, [('image', (all_images['half_oreo'], screen, (110, 60), (330, 350))),
+      fade_in((0, 0, 0), screen, 560, 600, 110, [('image', (all_images['half_oreo'], screen, (110, 60), (330, 350))),
                                                ('text', (font_1, 'Production', screen, (255, 255, 255), (190, 400)))])
 
-      fade_out((0, 0, 0), screen, 560, 600, 5, [('image', (all_images['half_oreo'], screen, (110, 60), (330, 350))),
+      fade_out((0, 0, 0), screen, 560, 600, 150, [('image', (all_images['half_oreo'], screen, (110, 60), (330, 350))),
                                                 ('text', (font_1, 'Production', screen, (255, 255, 255), (190, 400)))])
       cutscene = 2
 
    if cutscene < 3:
-      fade_out((255, 255, 255), screen, 560, 600, 8)
+      fade_out((255, 255, 255), screen, 560, 600, 120)
       break
 
-   pygame.display.update()
 
 #--Did The play skip any fade ins?--
 
@@ -99,8 +100,6 @@ while game_on == True and menu == True:
    local_button.redraw(screen)
    multiplayer_button.redraw(screen)
 
-
-
    redraw([('text', [font_1, 'Local', screen, (0, 0, 0), (230, 325)]),
            ('text', [font_1, 'Multiplayer', screen, (0, 0, 0), (180, 425)]),
            ('image', [all_images['connect_4'], screen, (30, 30), (480, 190)])])
@@ -110,11 +109,11 @@ while game_on == True and menu == True:
          game_on = False
       if local_button.is_clicked(event):
          intro_songs.stop()
-         fade_out((255, 255, 255), screen, 560, 600, 3)
+         fade_out((255, 255, 255), screen, 560, 600, 110)
          menu = False
       multiplayer_button.is_clicked(event)
 
-   pygame.time.delay(30)
+   clock.tick(140)
    pygame.display.update()
 
 #--------------------------------------------------------
@@ -129,7 +128,7 @@ board = Board(im, 0, 80)
 #^-Every square which makes up the board is 80 x 80 units-^
 
 #--ground
-floor = Sprite_object_basic('floor', 0, 560, 560, 40)
+floor = Sprite_object_basic('floor', 0, 560, 560, 40, 560, 40)
 #--------
 
 #--The first chip--
@@ -178,7 +177,7 @@ while game_on:
 
    Chip.draw_chips(screen)
    board.draw_board(screen, "Player {} GO".format(current_player))
-   game_music.play_list(60, 5)
+   game_music.play_list(20, 5)
 
    pygame.display.update()
 
